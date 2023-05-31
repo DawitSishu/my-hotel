@@ -6,13 +6,21 @@ const Users = require('./Users.js')
 //@access public
 const createUser = (req,res) =>{
     const {email,password,name} = req.body;
+
+    if(!email || !password || !name){
+        res.status(400);
+        throw new Error('All fields are required');
+    }
+
     const existingUser = Users.filter(user=>user.email == email)
+    
     if(existingUser.length > 0){
-        res.status(400).json({msg:"user already exists"})
+        res.status(400);
+        throw new Error("user already exists")
     }else{
         const newUser = {email,password,name,id:Users.length + 1};
         Users.push(newUser);
-        res.json(newUser);
+        res.status(201).json(newUser);
     }
 }
 
@@ -22,12 +30,21 @@ const createUser = (req,res) =>{
 //@access public
 const loginUser = (req,res) =>{
     const {email,password} = req.body;
+
+    if(!email || !password ){
+        res.status(400);
+        throw new Error('All fields are required');
+    }
+
     const user = Users.filter(user=>user.email == email)
+    
     if(user.length == 0){
-        res.status(400).json({msg:"incorrect email or password"});
+        res.status(401);
+        throw new Error('Incorrect Email or Password');
     }else{
        if(user[0].password != password){
-        res.status(400).json({msg:"incorrect email or password"});
+         res.status(401);
+        throw new Error('Incorrect Email or Password');
        }else{
         res.json(user)
        }
