@@ -3,9 +3,9 @@ const app = require('express')();
 const PORT = process.env.PORT || 5000;
 
 
-app.get('/',(req, res)=>{
-    res.json({hi:"hi"})
-})
+app.use(require('express').json())
+
+app.use('/api/users', require('./Routes/UserRoutes'))
 
 
 app.listen(PORT,()=>{
