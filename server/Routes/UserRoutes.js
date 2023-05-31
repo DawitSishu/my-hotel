@@ -3,7 +3,8 @@ const {
     createUser,
     loginUser,
     getUser,
-    updateUser
+    updateUser,
+    userProfile
 } = require('../Controllers/UserController')
 
 
@@ -15,11 +16,14 @@ router.post('/signup',createUser);
 //login
 router.post('/login',loginUser);
 
-//profile
+//users
 router.get('/',getUser);
 
+//profile
+router.get('/profile/:id',userProfile)
+
 //update profile
-router.put('/update',updateUser);
+router.put('/update/:id',updateUser);
 
 
 module.exports = router;
