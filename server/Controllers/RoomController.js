@@ -1,5 +1,7 @@
+const cron = require('node-cron');
 const Room = require('../models/RoomModel');
 const Reservation = require('../models/ReservationModel');
+const User = require('../models/UserModel');
 const asyncHandler = require('express-async-handler');
 
 
@@ -68,44 +70,63 @@ const specificRoom = asyncHandler( async (req,res) =>{
 //@route POST /api/rooms/:id/reserve/:roomNumber
 //@access private
 const reserveRoom = asyncHandler(async (req, res) => {
+    const user = await User.findById(req.user._id);
     const roomId = parseInt(req.params.id);
-    const roomNumber = parseInt(req.params.roomNumber);
-    const room = await Room.findById(roomId);
-    const { checkInDate, checkOutDate } = req.body;
-    const specificRoom = room.rooms.find((r) => r.roomNumber === roomNumber);
-  
-    if (!room) {
-      const error = new Error('Room not found');
-      error.statusCode = 404;
-      throw error;
-    } else if (room.available <= 0) {
-      const error = new Error('Room-type is fully booked');
-      error.statusCode = 400;
-      throw error;
-    } else if (!specificRoom) {
-      const error = new Error('RoomNumber not found');
-      error.statusCode = 404;
-      throw error;
-    } else {
-      const reservation = new Reservation({
-        room: room._id,
-        checkInDate,
-        checkOutDate,
-      });
-      const savedReservation = await reservation.save();
-      specificRoom.reservation = savedReservation._id; // Update the specific room's reservation
-      room.available--;
-      room.reserved++;
-      await room.save();
-      res.status(200).json({ msg: 'Room reserved successfully' });
-    }
+  const roomNumber = parseInt(req.params.roomNumber);
+  const room = await Room.findById(roomId);
+  const { checkInDate, checkOutDate } = req.body;
+  const specificRoom = room.rooms.find((room) => room.roomNumber === roomNumber);
+
+  if (!room) {
+    const error = new Error('Room not found');
+    error.statusCode = 404;
+    throw error;
+  } else if (room.available <= 0) {
+    const error = new Error('Room-type is fully booked');
+    error.statusCode = 400;
+    throw error;
+  } else if (!specificRoom) {
+    const error = new Error('RoomNumber not found');
+    error.statusCode = 404;
+    throw error;
+  } else {
+    // Room reservation process to be done
+    const reservation = new Reservation({
+      room: room._id,
+      checkInDate,
+      checkOutDate,
+    });
+
+    const savedReservation = await reservation.save();
+
+    specificRoom.reservation = savedReservation._id;
+    room.available--;
+    room.reserved++;
+
+    await Promise.all([specificRoom.save(), room.save()]);
+
+    user.reservation = savedReservation._id;
+    await user.save();
+
+    res.status(200).json({ msg: 'Room reserved successfully' });
+  }
+    
   });
 
 //@desc cancel room reservation
 //@route GET /api/rooms/:id/cancel
 //@access private
 const cancelReservation = asyncHandler(async (req, res) => {
-    const reservationId = req.params.id;
+    const reservationId = req.user.reservation;
+    const user = await User.findById(req.user._id);
+
+
+    if (!reservationId) {
+      const error = new Error('User does not have an active reservation');
+      error.statusCode = 400;
+      throw error;
+    }
+  
     const reservation = await Reservation.findById(reservationId);
   
     if (!reservation) {
@@ -134,10 +155,62 @@ const cancelReservation = asyncHandler(async (req, res) => {
     room.available++;
     room.reserved--;
   
-    await Promise.all([reservation.remove(), room.save()]);
+    await Promise.all([reservation.remove(), specificRoom.save(), room.save()]);
+  
+    user.reservation = undefined;
+    await user.save();
   
     res.status(200).json({ msg: 'Reservation cancelled successfully' });
   });
+
+
+
+//@desc cancel room reservation bvy checking if there are any expired reservations
+//@route  no-routes its a cron-job runs periodically
+//@access not-accessible to anyone
+const cancelExpiredReservations = async () => {
+    // Get current date
+    const currentDate = new Date();
+  
+    try {
+      // Find reservations where checkOutDate is before or equal to the current date
+      const expiredReservations = await Reservation.find({
+        checkOutDate: { $lte: currentDate }
+      });
+  
+      // Process each expired reservation
+      for (const reservation of expiredReservations) {
+        const roomId = reservation.room;
+        const room = await Room.findById(roomId);
+        const specificRoom = room.rooms.find(
+          (r) => r.reservation && r.reservation.toString() === reservation._id.toString()
+        );
+  
+        // Remove reservation from specific room
+        if (specificRoom) {
+          specificRoom.reservation = undefined;
+          room.available++;
+          room.reserved--;
+        }
+  
+        // Update room and user
+        await Promise.all([specificRoom.save(), room.save()]);
+        const user = await User.findOne({ reservation: reservation._id });
+        if (user) {
+          user.reservation = undefined;
+          await user.save();
+        }
+  
+        // Remove reservation from database
+        await reservation.remove();
+      }
+    } catch (error) {   
+      console.error('Error cancelling expired reservations', error);        
+    }
+  };
+//Run the cancelExpiredReservations function every day at midnight
+cron.schedule('0 0 * * *', cancelExpiredReservations);
+
 
 module.exports = {
     getRooms,
