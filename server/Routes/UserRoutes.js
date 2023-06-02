@@ -4,8 +4,8 @@ const {
     loginUser,
     getUser,
     updateUser,
-    userProfile
-} = require('../Controllers/UserController')
+} = require('../Controllers/UserController');
+const userAuthChecker = require('../Middlewares/userAuthChecker')
 
 
 const router = express.Router();
@@ -16,14 +16,11 @@ router.post('/signup',createUser);
 //login
 router.post('/login',loginUser);
 
-//users
-router.get('/',getUser);
-
-//profile
-router.get('/profile/:id',userProfile)
+//user-profile
+router.get('/',userAuthChecker,getUser);
 
 //update profile
-router.put('/update/:id',updateUser);
+router.put('/update',userAuthChecker,updateUser);
 
 
 module.exports = router;
