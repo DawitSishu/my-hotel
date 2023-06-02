@@ -7,7 +7,7 @@ const roomSchema = mongoose.Schema({
   reserved: { type: Number, required: true },
   rooms: [
     {
-      roomNumber: { type: String, required: true, unique: true },
+      roomNumber: { type: Number, required: true, unique: true },
       reserved: { type: Boolean, required: true },
       reservation: { type: mongoose.Schema.Types.ObjectId, ref: 'Reservation' }
     }
