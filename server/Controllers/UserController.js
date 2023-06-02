@@ -53,21 +53,25 @@ const loginUser = asyncHandler(async (req, res) => {
     const { email, password } = req.body;
   
     if (!email || !password) {
-      res.status(400);
-      throw new Error('All fields are required');
+      const err = new Error('All fields are required');
+        err.statusCode = 400;
+      throw err;
+      
     }
   
     const user = await User.findOne({ email });
   
     if (!user) {
-      res.status(401);
-      throw new Error('Incorrect Email or Password');
+      const err = new Error('Incorrect Email or Password');
+        err.statusCode = 401;
+      throw err;
     } else {
       const isPasswordMatch = await bcrypt.compare(password, user.password);
   
       if (!isPasswordMatch) {
-        res.status(401);
-        throw new Error('Incorrect Email or Password');
+        const err = new Error('Incorrect Email or Password');
+        err.statusCode = 401;
+      throw err;
       } else {
         const { password: omitPassword, ...userData } = user.toObject();
 
@@ -97,8 +101,9 @@ const updateUser =asyncHandler( async  (req,res) =>{
 
     // Check if any required fields are missing
     if (!name && !email && !age) {
-      res.status(400);
-      throw new Error('At least one field (name, email, or age) is required');
+      const err = new Error('IAt least one field (name, email, or age) is required');
+        err.statusCode = 400;
+      throw err;
     }
 
     // Update the user's profile

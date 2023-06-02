@@ -14,12 +14,15 @@ const userAuthChecker =  (req, res, next) => {
       req.user = decodedData;
       next();
     } catch (error) {
-      res.status(401);
-      throw new Error('Not authorized to access this resource');
+      const err = new Error('Not authorized to access this resource');
+        err.statusCode = 401;
+      throw err;
+      
     }
   } else {
-    res.status(401);
-    throw new Error('Not authorized to access this resource');
+    const err = new Error('Not authorized to access this resource');
+        err.statusCode = 401;
+      throw err;
   }
   
 };

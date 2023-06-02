@@ -1,11 +1,14 @@
 const Rooms = require('./Rooms.js');
+const Room = require('../models/RoomModel');
+const Reservation = require('../models/ReservationModel');
+const asyncHandler = require('express-async-handler');
 
 
 //@desc get rooms
 //@route GET /api/rooms?search=query&filter=parameter
 //@access private
-const getRooms = (req, res) => {
-    let filteredRooms = [...Rooms];
+const getRooms = asyncHandler(async (req, res) => {
+    let filteredRooms = await Room.find({});
   
     // Search rooms based on the 'search' query parameter
     if (req.query.search) {
@@ -27,31 +30,40 @@ const getRooms = (req, res) => {
     }
   
     res.json(filteredRooms);
-  };
+  });
+  
 
 //@desc get avialable rooms
 //@route GET /api/rooms/available
 //@access private
-const availabeRooms = (req,res) =>{
-    const aviailableRoom = Rooms.filter(room => room.available > 0);
-    res.json(aviailableRoom);
-}
+const availabeRooms = asyncHandler(async (req, res) => {
+    // Find rooms with availability greater than 0
+    const availableRooms = await Room.find({ available: { $gt: 0 } });
+  
+    res.json(availableRooms);
+  });
 
 //@desc get a specific room
 //@route GET /api/rooms/:id
 //@access private
-const specificRoom = (req,res) =>{
-    const roomId = parseInt(req.params.id);
-    const room = Rooms.find(room => room.id === roomId);
-
-    if(!room){
-        res.status(404);
-        throw new Error("Room not found");
-    }else{
+const specificRoom = asyncHandler( async (req,res) =>{
+    try {
+        const roomId = req.params.roomId;
+    
+        const room = await Room.findById(roomId);
+    
+        if (!room) {
+          const error = new Error('Room not found');
+          error.statusCode = 400;
+          throw error;
+        }
+    
         res.json(room);
-    }
+      } catch (error) {
+            throw new Error("Something went wrong");
+      }
 
-}
+});
 
 //@desc reserve room
 //@route POST /api/rooms/:id/reserve

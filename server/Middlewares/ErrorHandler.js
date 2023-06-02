@@ -8,6 +8,7 @@ const constants = {
   
   function errorHandler(err, req, res, next) {
     const statusCode = err.statusCode || constants.SERVER_ERROR;
+    console.log(err,err.statusCode);
     const errorResponse = {
       title: "",
       message: err.message,

@@ -9,6 +9,7 @@ const roomSchema = mongoose.Schema({
     {
       roomNumber: { type: String, required: true, unique: true },
       reserved: { type: Boolean, required: true },
+      reservation: { type: mongoose.Schema.Types.ObjectId, ref: 'Reservation' }
     }
   ]
 });

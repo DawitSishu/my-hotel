@@ -5,7 +5,7 @@ const {
     getUser,
     updateUser,
 } = require('../Controllers/UserController');
-const userAuthChecker = require('../Middlewares/userAuthChecker')
+const userAuthChecker = require('../Middlewares/userAuthChecker');
 
 
 const router = express.Router();
