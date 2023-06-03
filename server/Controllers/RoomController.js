@@ -34,14 +34,35 @@ const getRooms = asyncHandler(async (req, res) => {
   });
   
 
-//@desc get avialable rooms
-//@route GET /api/rooms/available
-//@access private
+//@desc check avialable rooms in a specified time interval
+//@route POST /api/rooms/available
+//@access public
 const availabeRooms = asyncHandler(async (req, res) => {
-    // Find rooms with availability greater than 0
-    const availableRooms = await Room.find({ available: { $gt: 0 } });
-  
-    res.json(availableRooms);
+  const { checkInDate, checkOutDate } = req.query;
+
+  try {
+    // Find available rooms that do not have any overlapping reservations
+    const availableRooms = await Room.find({
+      reserved: 0,
+      'rooms.reservation': {
+        $not: {
+          $elemMatch: {
+            $or: [
+              { checkInDate: { $lt: checkOutDate }, checkOutDate: { $gt: checkInDate } },
+              { checkInDate: { $gte: checkInDate, $lte: checkOutDate } },
+              { checkOutDate: { $gte: checkInDate, $lte: checkOutDate } },
+            ],
+          },
+        },
+      },
+    });
+
+    res.status(200).json( availableRooms );
+  } catch (err) {
+    const error = new Error('Internal Server Error');
+    error.statusCode = 500;
+    throw error;
+  }
   });
 
 //@desc get a specific room
@@ -164,6 +185,42 @@ const cancelReservation = asyncHandler(async (req, res) => {
   });
 
 
+//@desc reserve room
+//@route POST /api/rooms/reserveRoom/:id/:roomNumber
+//@access public
+  const PublicReserveRoom = async (req, res) => {
+    const { checkInDate, checkOutDate, roomType } = req.body;
+    try {
+      // Find a room of the specified type with availability greater than 0
+      const room = await Room.findOne({ type: roomType, available: { $gt: 0 } });
+  
+      if (!room) {
+        return res.status(404).json({ error: 'No available rooms of the specified type' });
+      }
+  
+      // Create a new reservation
+      const reservation = new Reservation({
+        room: room._id,
+        checkInDate,
+        checkOutDate,
+      });
+  
+      // Save the reservation
+      await reservation.save();
+  
+      // Update room availability
+      room.available--;
+      room.reserved++;
+      await room.save();
+  
+      res.status(200).json({ message: 'Room reserved successfully', reservation });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  };  
+
+
 
 //@desc cancel room reservation bvy checking if there are any expired reservations
 //@route  no-routes its a cron-job runs periodically
@@ -217,5 +274,6 @@ module.exports = {
     availabeRooms,
     specificRoom,
     reserveRoom,
-    cancelReservation
+    cancelReservation,
+    PublicReserveRoom
 }

@@ -1,31 +1,36 @@
 const express = require("express");
+const userAuthChecker = require('./Middlewares/userAuthChecker');
 
 const {
     getRooms,
     availabeRooms,
     specificRoom,
     reserveRoom,
-    cancelReservation
+    cancelReservation,
+    PublicReserveRoom
 } = require('../Controllers/RoomController')
 
 const router = express.Router();
 
 
 //get all rooms
-router.get('/',getRooms)
+router.get('/?search=query&filter=parameter',userAuthChecker,getRooms);
 
 //get available rooms
-router.get('/available',availabeRooms)
+router.post('/available',availabeRooms);
 
 
 //get specific room
 router.get('/:id',specificRoom)
 
 //reserve a room
-router.post('/:id/reserve',reserveRoom)
+router.post('/:id/reserve/:roomNumber',userAuthChecker,reserveRoom)
 
 //cancel reservation
-router.post('/:id/cancel',cancelReservation)
+router.post('/:id/cancel',userAuthChecker,cancelReservation)
+
+//reserve a room publickly
+router.post('/reserveRoom/:id/:roomNumber',PublicReserveRoom)
 
 
 
