@@ -1,5 +1,5 @@
 import './App.css';
-//make  user signup to reserve room
+//make  user signup to reserve room  || show a dummy payment screen
 
 function App() {
   return (
