@@ -1,7 +1,6 @@
-import { Grid,Typography, Button, Box,TextField } from "@mui/material"
+import { Grid,Typography, Button, Box,TextField,InputLabel } from "@mui/material"
 import { useState } from "react"
 import { useForm } from "react-hook-form";
-import background from "../../Assets/bgvid.mp4";
 import '../Login/Login.css';
 import IconButton from '@mui/material/IconButton';
 import Visibility from '@mui/icons-material/Visibility';
@@ -9,21 +8,42 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import InputAdornment from '@mui/material/InputAdornment';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import { AccountCircle, Email,AccessTime } from '@mui/icons-material';
+import EventIcon from '@mui/icons-material/Event';
 import { Link } from 'react-router-dom';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 // import Spinner from "../Spinner/Spinner"
 
-import React from 'react'
 const baseUrl = 'http://localhost:5000/api/users/signup'
 
 const SignUpForm = (props) => {
     const [showPassword, setShowPassword] = useState(false);
-    const [selectedDate, setSelectedDate] = React.useState(null);
 
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
-    console.log(date);
-  };
+    const handleDataSubmit = (data) => {
+      const newAge = calculateAge(data.age);
+      if(newAge < 18){  
+          alert("Must be at least 18 years old");
+          return
+      }else{
+        props.onSubmit({...data,age: `${newAge}`});
+      }
+    };
+    
+    const calculateAge = (birthDate) => {
+      const today = new Date();
+    const birthDateObj = new Date(birthDate);
+    let calculatedAge = today.getFullYear() - birthDateObj.getFullYear();
+    if (
+      today.getMonth() < birthDateObj.getMonth() ||
+      (today.getMonth() === birthDateObj.getMonth() &&
+        today.getDate() < birthDateObj.getDate())
+    ) {
+      calculatedAge--;
+    }
+
+    return calculatedAge
+    };
 
     const { register, handleSubmit, formState: { errors } } = useForm();
 
@@ -31,7 +51,7 @@ const SignUpForm = (props) => {
   return (
     <Box
     component='form'
-    onSubmit={handleSubmit((data) => props.onSubmit(data))}
+    onSubmit={handleSubmit(handleDataSubmit)}
     sx={{
       boxShadow: '0 0 10px rgba(255, 255, 255, 0.5)',
       padding: '20px',
@@ -55,7 +75,7 @@ const SignUpForm = (props) => {
       >
         <Grid container spacing={2}>
         <Grid item xs={12}>
-          <OutlinedInput
+           <OutlinedInput
           fullWidth={true}
               id="Name"
               placeholder="Name"
@@ -71,20 +91,22 @@ const SignUpForm = (props) => {
               <Typography color="error" variant="h7">
                 {errors.name.message}
               </Typography>
-            )}
+            )} 
           </Grid>
           <Grid item xs={12}>
+          <InputLabel  htmlFor="date-input">
+          Select Birth-Date
+        </InputLabel>
           <OutlinedInput
-          fullWidth={true}
-              id="Age"
-              placeholder="Age"
-              type='number'
-              startAdornment={
-                <InputAdornment position="start">
-                      <AccessTime />
-                </InputAdornment>
-              }
-              {...register('age', { required: "Age can't be empty" })}
+              fullWidth={true}
+              type="date"
+                startAdornment={
+                    <InputAdornment position="start">
+                            <EventIcon />
+                    </InputAdornment>
+                  }
+                id="date-input"
+              {...register('age', { required: "Birth-Date can't be empty" })}
             />
             {errors.password && (
               <Typography color="error" variant="h7">
