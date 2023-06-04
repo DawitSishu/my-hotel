@@ -12,20 +12,24 @@ const createUser = asyncHandler(async (req, res) => {
     const { email, password, name, age } = req.body;
   
     if (!email || !password || !name || !age) {
-      res.status(400);
-      throw new Error('All fields are required');
+      const error = new Error('All fields are required');
+    error.statusCode = 400;
+    throw error;
     }
   
     if (age < 18) {
-      res.status(400);
-      throw new Error('User must be at least 18 years old');
+      const error = new Error('User must be at least 18 years old');
+      error.statusCode = 400;
+      throw error;
     }
   
     const existingUser = await User.findOne({ email });
   
     if (existingUser) {
-      res.status(400);
-      throw new Error('User already exists');
+      const error = new Error('User already exists');
+      error.statusCode = 400;
+      throw error;
+      
     } else {
       // Hash the password
       const hashedPassword = await bcrypt.hash(password, 10);

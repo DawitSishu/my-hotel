@@ -9,30 +9,26 @@ export const signUpUser = async ({email, password,name,age})=>{
                     {email,password,name,age});
     return user.data;
     } catch(error){
-        alert(error.message);
-        return;
+        return error.response.data.message;
     }
 }
 
-export const loginUser = async ({email, password,})=>{
+export const loginUser =  async ({email, password,})=>{
     try {
-        const token = await axios.post(
+        const token =  await axios.post(
                         `${baseUrl}/api/users/login`,
                         {email,password});
         localStorage.clear();
         localStorage.setItem('token', token.data);
     } catch (error) {
-        alert(error.message);
-        return;
+            return 'An error occurred while logging in.'    
     }
 }
 
 export const logoutUser = async ()=>{
     try {
         localStorage.clear();
-        return true;
     } catch (error) {
-        alert(error.message);
-        return;
+        // return error.response.data.message;
     }
 }

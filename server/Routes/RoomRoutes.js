@@ -1,5 +1,5 @@
 const express = require("express");
-const userAuthChecker = require('./Middlewares/userAuthChecker');
+const userAuthChecker = require('../Middlewares/userAuthChecker');
 
 const {
     getRooms,
