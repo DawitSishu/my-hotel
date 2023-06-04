@@ -19,7 +19,7 @@ function App() {
   return (
     <BrowserRouter>
     <Routes>
-        <Route exact path="/" element={!loggedIn ? <Home onLogOut={handleLogOut}/> : <Login onLogIn = {handleLogIn} />}/>
+        <Route exact path="/" element={loggedIn ? <Home onLogOut={handleLogOut}/> : <Login onLogIn = {handleLogIn} />}/>
         <Route path='/signup' element={<SignUp />} />
     </Routes>
     </BrowserRouter>

@@ -9,6 +9,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import InputAdornment from '@mui/material/InputAdornment';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import { AccountCircle } from '@mui/icons-material';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { Link } from 'react-router-dom';
 // import Spinner from "../Spinner/Spinner"
 import axios from 'axios';
@@ -19,6 +20,12 @@ function Login(props) {
     const [isDisabled,setIsDisabled] = useState(false)
     const [showPassword, setShowPassword] = useState(false);
     const [err,setErr] = useState('')
+
+    const darkTheme = createTheme({
+      palette: {
+        mode: 'dark',
+      },
+    });
 
     const { register, handleSubmit, formState: { errors } } = useForm();
 
@@ -40,8 +47,10 @@ function Login(props) {
       }
     }
   return (
+    
   <div className="main">
     <video src={background} autoPlay muted loop />
+    <ThemeProvider theme={darkTheme}>
   <Box
   component='form'
   onSubmit={handleSubmit(handleUserData)}
@@ -55,7 +64,7 @@ function Login(props) {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
     borderRadius: '8px',
     width: '100%',
     maxWidth: '400px',
@@ -132,6 +141,7 @@ function Login(props) {
         </Grid>
       </Grid>
     </Box>
+    </ThemeProvider>
   </div>
   )
 }

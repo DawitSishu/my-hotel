@@ -1,6 +1,6 @@
 import { Grid,Typography, Button, Box,TextField,InputLabel } from "@mui/material"
-import { useState } from "react"
-import { useForm } from "react-hook-form";
+import { useState,forwardRef } from "react"
+import { useForm,Controller } from "react-hook-form";
 import '../Login/Login.css';
 import IconButton from '@mui/material/IconButton';
 import Visibility from '@mui/icons-material/Visibility';
@@ -10,8 +10,14 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import { AccountCircle, Email,AccessTime } from '@mui/icons-material';
 import EventIcon from '@mui/icons-material/Event';
 import { Link } from 'react-router-dom';
-import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import dayjs from 'dayjs';
+
+
 
 // import Spinner from "../Spinner/Spinner"
 
@@ -19,9 +25,19 @@ const baseUrl = 'http://localhost:5000/api/users/signup'
 
 const SignUpForm = (props) => {
     const [showPassword, setShowPassword] = useState(false);
+    const [selectedDate, setSelectedDate] = useState(null);
 
+
+    const darkTheme = createTheme({
+      palette: {
+        mode: 'dark',
+      },
+    });
+
+    const { register, handleSubmit, control,formState: { errors } } = useForm();
     const handleDataSubmit = (data) => {
       const newAge = calculateAge(data.age);
+      console.log(newAge);
       if(newAge < 18){  
           alert("Must be at least 18 years old");
           return
@@ -29,6 +45,7 @@ const SignUpForm = (props) => {
         props.onSubmit({...data,age: `${newAge}`});
       }
     };
+  
     
     const calculateAge = (birthDate) => {
       const today = new Date();
@@ -45,13 +62,12 @@ const SignUpForm = (props) => {
     return calculatedAge
     };
 
-    const { register, handleSubmit, formState: { errors } } = useForm();
-
    
   return (
+    <ThemeProvider theme={darkTheme}>
     <Box
-    component='form'
-    onSubmit={handleSubmit(handleDataSubmit)}
+     component='form'
+     onSubmit={handleSubmit(handleDataSubmit)}
     sx={{
       boxShadow: '0 0 10px rgba(255, 255, 255, 0.5)',
       padding: '20px',
@@ -62,7 +78,7 @@ const SignUpForm = (props) => {
       top: '50%',
       left: '50%',
       transform: 'translate(-50%, -50%)',
-      backgroundColor: 'rgba(255, 255, 255, 0.8)',
+      backgroundColor: 'rgba(0, 0, 0, 0.6)',
       borderRadius: '8px',
       width: '100%',
       maxWidth: '400px',
@@ -86,7 +102,7 @@ const SignUpForm = (props) => {
                 </InputAdornment>
               }
               {...register('name', { required: "Name can't be empty" })}
-            />
+            /> 
             {errors.password && (
               <Typography color="error" variant="h7">
                 {errors.name.message}
@@ -94,20 +110,37 @@ const SignUpForm = (props) => {
             )} 
           </Grid>
           <Grid item xs={12}>
-          <InputLabel  htmlFor="date-input">
-          Select Birth-Date
-        </InputLabel>
-          <OutlinedInput
-              fullWidth={true}
-              type="date"
-                startAdornment={
-                    <InputAdornment position="start">
-                            <EventIcon />
-                    </InputAdornment>
-                  }
-                id="date-input"
-              {...register('age', { required: "Birth-Date can't be empty" })}
-            />
+                 <Controller    
+                 name="age"
+                      control={control}
+                      rules={{ required: "Birth-Date can't be empty" }}
+                      render={({ field }) => (
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                          <DatePicker
+                            label="Birth Date"
+                            value={field.value || null} 
+                            onChange={(date) => field.onChange(date)}
+                            textField={(params) => (
+                              <OutlinedInput
+                                {...params}
+                                fullWidth
+                                id="birth-date"
+                                type="text"
+                                InputProps={{
+                                  ...params.InputProps,
+                                  startAdornment: (
+                                    <InputAdornment position="start">
+                                      <EventIcon  />
+                                    </InputAdornment>
+                                  ),
+                                }}
+                              />
+                            )}
+                            sx={{ width: '100%' }}
+                          />
+              </LocalizationProvider>
+                  )}
+                />
             {errors.password && (
               <Typography color="error" variant="h7">
                 {errors.age.message}
@@ -179,6 +212,7 @@ const SignUpForm = (props) => {
           </Grid>
         </Grid>
       </Box>
+      </ThemeProvider>
   )
 }
 
