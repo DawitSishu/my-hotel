@@ -45,8 +45,16 @@ const Home = (props) => {
         <HomeBody />
     </div>
     <div className="main2 panel">
+    <div className="overlay"></div>  
+      <div
+        style={{
+          position: 'relative',
+          zIndex: 2, 
+        }}
+      >
         <HomeBookRoom />
-    </div>
+      </div>
+      </div>
     </>
   )
 }
