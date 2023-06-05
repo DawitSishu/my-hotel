@@ -2,6 +2,19 @@
     font-family: 'myCursive';
     src: url('../../Assets/AnandaBlackPersonalUseRegular-rg9Rx.ttf') format('truetype');
   }
+  body {
+    overflow: auto;
+  }
+  .main {
+    width: 100%;
+    height: 100dvh;
+  }
+  video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
   .overlay {
     position: absolute;
     top: 0;
@@ -12,7 +25,7 @@
     /* background-color: #000000cc; */
   }
   .scroll-icon {
-    position: fixed;
+    position:absolute;
     bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
