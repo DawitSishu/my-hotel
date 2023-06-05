@@ -10,35 +10,44 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 // gsap.registerPlugin(ScrollTrigger);
 
 const Home = (props) => {
-   useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
+    useEffect(()=>{
+      gsap.registerPlugin(ScrollTrigger);
+      let panels = gsap.utils.toArray(".panel");
+      let tops = panels.map(panel => ScrollTrigger.create({trigger: panel, start: "top top"}));
+      panels.forEach((panel, i) => {
+        ScrollTrigger.create({
+          trigger: panel,
+          start: () => panel.offsetHeight < window.innerHeight ? "top top" : "bottom bottom", 
+          pin: true, 
+          pinSpacing: false 
+        });
+      });
+      ScrollTrigger.create({
+        snap: {
+          snapTo: (progress, self) => {
+            let panelStarts = tops.map(st => st.start), 
+                snapScroll = gsap.utils.snap(panelStarts, self.scroll()); 
+            return gsap.utils.normalize(0, ScrollTrigger.maxScroll(window), snapScroll);
+          },
+          duration: 0.5
+        }
+      });
+      
 
-    const timeline = gsap.timeline({
-      scrollTrigger: {
-        trigger: '.main', // CSS selector for the trigger element
-        start: 'top center', // Define when the animation should start
-        end: 'bottom center', // Define when the animation should end
-        scrub: true, // Enable smooth scrubbing effect
-        // markers: true, // Add markers for debugging
-      },
-    });
-    gsap.set('.main', { opacity: 0, y: -100 }); // Initialize the initial state of the component
-    gsap.to('.main', { opacity: 1, y: 0, duration: 1, scrollTrigger: '.main' }); // Animate the component when it comes into view
-    // timeline.to('.main', { opacity: 1, y: 0, duration: 1 });
+    },[])
+ 
 
-    ScrollTrigger.refresh();
-  }, []);
   return (
-    <div className="scroll-trigger">
-    <div className="main">
+    <>
+    <div className="main panel">
         <video src={background} autoPlay muted  loop/>
         <div className="overlay"></div>
         <HomeBody />
     </div>
-    <div className="main2">
+    <div className="main2 panel">
         <HomeBookRoom />
     </div>
-    </div>
+    </>
   )
 }
 export default Home;
