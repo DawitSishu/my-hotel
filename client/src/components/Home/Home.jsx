@@ -6,6 +6,7 @@ import HomeBody from "./HomeBody";
 import HomeBookRoom from "./HomeBookRoom";
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import Gallery from "./Gallery";
 
 // gsap.registerPlugin(ScrollTrigger);
 
@@ -22,16 +23,16 @@ const Home = (props) => {
           pinSpacing: false 
         });
       });
-      ScrollTrigger.create({
-        snap: {
-          snapTo: (progress, self) => {
-            let panelStarts = tops.map(st => st.start), 
-                snapScroll = gsap.utils.snap(panelStarts, self.scroll()); 
-            return gsap.utils.normalize(0, ScrollTrigger.maxScroll(window), snapScroll);
-          },
-          duration: 0.5
-        }
-      });
+      // ScrollTrigger.create({
+      //   snap: {
+      //     snapTo: (progress, self) => {
+      //       let panelStarts = tops.map(st => st.start), 
+      //           snapScroll = gsap.utils.snap(panelStarts, self.scroll()); 
+      //       return gsap.utils.normalize(0, ScrollTrigger.maxScroll(window), snapScroll);
+      //     },
+      //     duration: 0.5
+      //   }
+      // });
       
 
     },[])
@@ -43,18 +44,21 @@ const Home = (props) => {
         <video src={background} autoPlay muted  loop/>
         <div className="overlay"></div>
         <HomeBody />
-    </div>
+        </div>
+        <div style={{ overflow: 'hidden'}}>
+        <Gallery  />
+        </div>
     <div className="main2 panel">
     <div className="overlay"></div>  
-      <div
-        style={{
-          position: 'relative',
-          zIndex: 2, 
-        }}
-      >
-        <HomeBookRoom />
-      </div>
-      </div>
+    <div
+    style={{
+      position: 'relative',
+      zIndex: 2, 
+    }}
+    >
+    <HomeBookRoom />
+    </div>
+  </div>
     </>
   )
 }
