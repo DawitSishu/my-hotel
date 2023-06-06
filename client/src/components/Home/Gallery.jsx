@@ -1,7 +1,15 @@
 import { useEffect } from "react";
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import  image1 from '../../Assets/bg.jpg';
+import  image1 from '../../Assets/1.jpg';
+import  image2 from '../../Assets/2.jpg';
+import  image3 from '../../Assets/3.jpg';
+import  image4 from '../../Assets/4.jpg';
+import  image5 from '../../Assets/5.jpg';
+import  image6 from '../../Assets/6.jpg';
+import  image7 from '../../Assets/7.jpg';
+import  image8 from '../../Assets/8.jpg';
+import  image9 from '../../Assets/9.jpg';
 import backgroud from '../../Assets/darkbg.jpg';
 import { Grid, Typography } from "@mui/material";
 import './style.css';
@@ -27,7 +35,7 @@ const Gallery = () => {
       ease: "none",
     });
 
-    const images = [image1, image1, image1,image1,image1,image1,image1,image1,image1];
+    const images = [image1, image7, image2,image8,image3,image6,image4,image5,image9];
     gsap.set('.gridBlock', { backgroundImage: (i) => `url(${images[i % images.length]})` });
 
     const bigImg = new Image();
@@ -38,60 +46,6 @@ const Gallery = () => {
     bigImg.src = image1;
   }, []);
 
-    // useEffect(() => {
-    //   gsap.registerPlugin(ScrollTrigger);
-    //   let tl=gsap.timeline();
-  
-    //   tl.to('.s', {
-    //     scrollTrigger: {
-    //       trigger: '.grid-container',
-    //       start: 'top top',
-    //       end: () => window.innerHeight * 4,
-    //       scrub: true,
-    //       markers: true,
-    //       pin: '.grid-container',
-          
-    //     },
-    //     scale: 0.3,
-    //     opacity: 0,
-    //     duration: 3,
-    // });
-    //         gsap.fromTo(
-    //             '.image-fade-in',
-    //             {
-    //               opacity: 0,
-    //               scale: 0,
-    //             },
-    //             {
-    //               opacity: 1,
-    //               scale: 1,
-    //               delay:3,
-    //               scrollTrigger: {
-    //                 trigger: '.image-fade-in',
-    //                 start: 'top center',
-    //                 scrub: true,
-    //                 markers: true,
-    //               },
-                  
-    //               duration: 3,
-    //             }
-    //           );
-        
-     
-     
-    // }, []);
-  // return (
-  //   <Grid className="grid-container" container style={{backgroundColor:'silver'}}>
-       
-  //       <Grid item xs={5}className="grid" >
-  //       <img src={image1} className="s" alt="Image 1" />
-  //       </Grid>
-  //     <Grid item xs={12} className="image-fade-in" >
-  //       <img src={image1} alt="Image 2"  />
-  //     </Grid> 
-  //       {/* Your grid elements with the class name "gridBlock" */}
-  //     </Grid>
-  // )
   return(
       <div className="grid-container"  
             style={{

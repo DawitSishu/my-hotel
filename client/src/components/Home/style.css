@@ -55,8 +55,8 @@
   }
   .gridLayer:nth-child(2) .gridBlock {
     top: 0;
-    left: 32.5vw;
-    width: 15vw;
+    left: 16.5vw;
+    width: 25vw;
     height: 15vw;
   }
   @media only screen and (max-width: 580px) {
@@ -68,9 +68,9 @@
     }
   }
   .gridLayer:nth-child(3) .gridBlock {
-    left: 0;
-    top: 25vw;
-    width: 15vw;
+    right: 55vw;
+    top: 10vw;
+    width: 25vw;
     height: 15vw;
   }
   @media only screen and (max-width: 580px) {
@@ -99,10 +99,10 @@
     z-index: 1;
   }
   .gridLayer:nth-child(5) .gridBlock {
-    top: 20vw;
+    top: 10vw;
     left: 50vw;
-    width: 5vw;
-    height: 5vw;
+    width: 15vw;
+    height: 15vw;
   }
   @media only screen and (max-width: 580px) {
     .gridLayer:nth-child(5) .gridBlock {
