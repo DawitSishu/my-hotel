@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import  image1 from '../../Assets/bg.jpg';
+import backgroud from '../../Assets/darkbg.jpg';
 import { Grid, Typography } from "@mui/material";
 import './style.css';
 
@@ -92,7 +93,14 @@ const Gallery = () => {
   //     </Grid>
   // )
   return(
-      <div className="grid-container"  style={{backgroundColor:'black'}}>
+      <div className="grid-container"  
+            style={{
+              backgroundImage:`url(${backgroud})`,
+              backgroundSize:'cover',
+              backgroundPosition:'center',
+              backgroundRepeat:'no-repeat',
+            }}
+      >
         <div className="grid" >
           <Typography variant="h4" sx={{color:'white', fontFamily:"myCursive"}}>Our Rooms</Typography>
           <div className="gridLayer">
