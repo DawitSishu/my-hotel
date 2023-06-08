@@ -1,13 +1,14 @@
 .menu {
     position: fixed;
-    top: -100vh;
+    overflow: hidden;
+    top: -200vh;
     width:100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     left: 0;
-    background-color: black;
+    background: linear-gradient(to bottom, #242323, #000000);
     height: 100vh;
     z-index: 10;
   }
@@ -27,7 +28,7 @@
   
   .line {
     height: 2px;
-    background-color: #f30707;
+    background-color: #ffffff;
   }
   .line:first-child {
     width:200%;
@@ -37,4 +38,105 @@
   }
   
 
+  .menu__item {
+    position: relative;
+    padding: 0 6vw;
+  }
+  
+  .menu__item-link {
+    display: inline-block;
+    cursor: pointer;
+    position: relative;
+    transition: opacity 0.4s;
+  }
+  
+  .menu__item-link::before {
+    all: initial;
+    counter-increment: menu;
+    position: absolute;
+    bottom: 60%;
+    left: 0;
+    pointer-events: none;
+  }
+  
+  .menu__item-link:hover {
+    transition-duration: 0.1s;
+    opacity: 0;
+  }
+  
+  .menu__item-img {
+    z-index: 2;
+    pointer-events: none;
+    position: absolute;
+    height: 12vh;
+    max-height: 600px;
+    opacity: 0;
+    left: 8%;
+    top: 10%;
+    transform: scale(0);
+  }
+  
+  .menu__item-link:hover + .menu__item-img {
+    opacity: 1;
+    transform: scale(1);
+    transition: all 0.4s;
+  }
+  
+  .menu {
+    padding: 10vh 0 25vh;
+    --offset: 20vw;
+    --move-initial: calc(-25% + var(--offset));
+    --move-final: calc(-50% + var(--offset));
+    font-size: 7vw;
+  }
+  
+  .marquee {
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    color: rgb(214, 214, 214);
+    pointer-events: none;
+  }
+  
+  .marquee__inner {
+    width: fit-content;
+    display: flex;
+    position: relative;
+    opacity: 0;
+    transition: all 0.1s;
+    transform: translateX(60px);
+    text-shadow: 0 0 5px #cca9a9, 0 0 10px #cca9a9;
+    animation: none;
+  }
+  
+  .menu__item-link:hover ~ .marquee .marquee__inner {
+    opacity: 1;
+    transform: translateX(0px);
+    transition-duration: 0.4s;
+    animation: marquee 7s linear infinite;
+  }
+  
+  .menu__item-link,
+  .marquee span {
+    white-space: nowrap;
+    font-size: 7vw;
+    padding: 0 1vw;
+    line-height: 1.15;
+  }
+  
+  .marquee span {
+    font-style: italic;
+    display: inline-block;
+    white-space: nowrap;
+  width: 100%;
+  }
+  @keyframes marquee {
+    0% {
+      transform: translateX(70%);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
   
