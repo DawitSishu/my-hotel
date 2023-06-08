@@ -32,6 +32,13 @@ const NavBar = () => {
           },
             '='
           );
+        tl.current.from('.menu__item',{
+            opacity:0,
+            y:'-100vh',
+            ease : 'elastic',
+            stagger:0.1,
+            duration:1,
+        })
     },[]);
 
     useEffect(()=>{
@@ -56,6 +63,33 @@ const NavBar = () => {
                         <div className="marquee">
                             <div className="marquee__inner" >
                                 <span>Home - Home - Home - Home - Home - Home - Home</span>
+                            </div>
+                        </div>
+                </div>
+                <div className="menu__item">
+                        <h3 className="menu__item-link" style={{color:'white'}}>Gallery</h3>
+                        <img className="menu__item-img" src={bg} />
+                        <div className="marquee">
+                            <div className="marquee__inner" >
+                                <span>Gallery - Gallery - Gallery - Gallery - Gallery - Gallery - Gallery</span>
+                            </div>
+                        </div>
+                </div>
+                <div className="menu__item">
+                        <h3 className="menu__item-link" style={{color:'white'}}>Reserve</h3>
+                        <img className="menu__item-img" src={bg} />
+                        <div className="marquee">
+                            <div className="marquee__inner" >
+                                <span>Reserve - Reserve - Reserve - Reserve - Reserve - Reserve - Reserve</span>
+                            </div>
+                        </div>
+                </div>
+                <div className="menu__item">
+                        <h3 className="menu__item-link" style={{color:'white'}}>Log-In</h3>
+                        <img className="menu__item-img" src={bg} />
+                        <div className="marquee">
+                            <div className="marquee__inner" >
+                                <span>Log-In - Log-In - Log-In - Log-In - Log-In - Log-In - Log-In</span>
                             </div>
                         </div>
                 </div>
