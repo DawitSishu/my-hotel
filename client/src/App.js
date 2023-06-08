@@ -6,6 +6,7 @@ import Login from './components/Login/Login';
 import SignUp from './components/SignUp/SignUp';
 import Home from './components/Home/Home';
 import Gallery from './components/Home/Gallery';
+import NavBar from './components/NavBar/NavBar';
 
 function App() {
   const [loggedIn, SetLoggedIn] = useState(false);
@@ -32,6 +33,7 @@ function App() {
     // </div>
     // </>
     <Home />
+    // <NavBar />
   );
  
 }

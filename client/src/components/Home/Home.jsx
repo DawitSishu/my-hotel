@@ -7,6 +7,7 @@ import HomeBookRoom from "./HomeBookRoom";
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Gallery from "./Gallery";
+import NavBar from '../NavBar/NavBar'; 
 
 // gsap.registerPlugin(ScrollTrigger);
 
@@ -40,6 +41,7 @@ const Home = (props) => {
 
   return (
     <>
+    <NavBar />
     <div className="main panel">
         <video src={background} autoPlay muted  loop/>
         <div className="overlay"></div>

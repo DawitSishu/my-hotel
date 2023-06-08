@@ -1,0 +1,40 @@
+.menu {
+    position: fixed;
+    top: -100vh;
+    width:100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    left: 0;
+    background-color: black;
+    height: 100vh;
+    z-index: 10;
+  }
+  
+  .hamburger-menu {
+    position: fixed;
+    top: 5%;
+    left: 8%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 20px;
+    cursor: pointer;
+    z-index: 20;
+  }
+  
+  .line {
+    height: 2px;
+    background-color: #f30707;
+  }
+  .line:first-child {
+    width:200%;
+  }
+  .line:last-child {
+    width:100%;
+  }
+  
+
+  

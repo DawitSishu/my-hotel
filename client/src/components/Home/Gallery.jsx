@@ -49,10 +49,11 @@ const Gallery = () => {
   return(
       <div className="grid-container"  
             style={{
-              backgroundImage:`url(${backgroud})`,
-              backgroundSize:'cover',
-              backgroundPosition:'center',
-              backgroundRepeat:'no-repeat',
+              // backgroundImage:`url(${backgroud})`,
+              // backgroundSize:'cover',
+              // backgroundPosition:'center',
+              // backgroundRepeat:'no-repeat',
+              backgroundColor: 'black'
             }}
       >
         <div className="grid" >
