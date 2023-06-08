@@ -57,7 +57,6 @@ const Gallery = () => {
             }}
       >
         <div className="grid" >
-          <Typography variant="h4" sx={{color:'white', fontFamily:"myCursive"}}>Our Rooms</Typography>
           <div className="gridLayer">
             <div className="gridBlock"></div>
           </div>

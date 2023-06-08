@@ -1,5 +1,6 @@
 import './NavBar.css';
-import bg  from '../../Assets/1.jpg';
+import homeImg  from '../../Assets/homeIndicator.png';
+import bg from '../../Assets/bg.jpg';
 import React, { useState, useEffect, useRef } from 'react';
 import {gsap} from 'gsap';
 
@@ -42,7 +43,14 @@ const NavBar = () => {
     },[]);
 
     useEffect(()=>{
-        isOpen ? tl.current.play() : tl.current.reverse(); 
+        if(isOpen){
+            tl.current.play();
+            document.body.style.overflow = 'hidden';
+        }else{
+            tl.current.reverse();
+            document.body.style.overflow = 'auto';
+        }
+        // isOpen ? (tl.current.play(),document.body.style.overflow = 'hidden') : tl.current.reverse(); 
     },[isOpen])
     
     
@@ -59,7 +67,7 @@ const NavBar = () => {
             <div className="menu">
                 <div className="menu__item">
                         <h3 className="menu__item-link" style={{color:'white'}}>Home</h3>
-                        <img className="menu__item-img" src={bg} />
+                        <img className="menu__item-img" src={homeImg} />
                         <div className="marquee">
                             <div className="marquee__inner" >
                                 <span>Home - Home - Home - Home - Home - Home - Home</span>
