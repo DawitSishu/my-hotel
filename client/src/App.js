@@ -5,8 +5,7 @@ import { useState } from 'react';
 import Login from './components/Login/Login';
 import SignUp from './components/SignUp/SignUp';
 import Home from './components/Home/Home';
-import Gallery from './components/Home/Gallery';
-import NavBar from './components/NavBar/NavBar';
+import Gallery from './components/Gallery/Gallery';
 
 function App() {
   const [loggedIn, SetLoggedIn] = useState(false);
@@ -19,12 +18,14 @@ function App() {
 
 
   return (
-    // <BrowserRouter>
-    // <Routes>
-    //     <Route exact path="/" element={!loggedIn ? <Home onLogOut={handleLogOut}/> : <Login onLogIn = {handleLogIn} />}/>
-    //     <Route path='/signup' element={<SignUp />} />
-    // </Routes>
-    // </BrowserRouter>
+    <BrowserRouter>
+    <Routes>
+        <Route exact path="/" element={<Home />}/>
+        <Route path='/login' element={<Login onLogIn = {handleLogIn} />} />
+        <Route path='/signup' element={<SignUp />} />
+        <Route path='/gallery' element={<Gallery />} />
+    </Routes>
+    </BrowserRouter>
     // <>
     // <div className="panel" style={{backgroundColor:'yellow', height:'100vh'}}>
     // </div >
@@ -32,7 +33,7 @@ function App() {
     // <Gallery />
     // </div>
     // </>
-    <Home />
+    // <Home /> <Login onLogIn = {handleLogIn} />
     // <NavBar />
   );
  
