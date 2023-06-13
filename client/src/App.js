@@ -6,7 +6,8 @@ import SignUp from './components/SignUp/SignUp';
 import Home from './components/Home/Home';
 import Gallery from './components/Gallery/Gallery';
 import Reserve from './components/Reserve/Reserve';
-import NotFoundPage from './components/NotFound/NotFound'; 
+import NotFoundPage from './components/NotFound/NotFound';
+import Rooms from './components/Rooms/Rooms';
 
 function App() {
   const [loggedIn, SetLoggedIn] = useState(false);
@@ -26,6 +27,7 @@ function App() {
         <Route path='/signup' element={<SignUp />} />
         <Route path='/gallery' element={<Gallery />} />
         <Route path='/reserve' element={loggedIn ? <Reserve /> : <NotFoundPage />} />
+        <Route path='/rooms' element={<Rooms />} />
         <Route path="*" element={<NotFoundPage />} /> 
     </Routes>
     </BrowserRouter>

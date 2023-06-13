@@ -10,12 +10,14 @@ import EventIcon from '@mui/icons-material/Event';
 import {useState} from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const BaseUri = 'http://localhost:5000/api/rooms/available';
 //api/rooms/available post 
 
 const HomeBookRoom = () => {
     const [err,setErr] = useState('');
+    const navigate = useNavigate();
     const { register, handleSubmit, control,formState: { errors } } = useForm();
 
 
@@ -26,12 +28,12 @@ const HomeBookRoom = () => {
       });
     
     const onDataSubmit = async(data) =>{
-      console.log(data);
        try {
          setErr('')
          const response = await axios.post(BaseUri,{...data}) 
          if(response){
-           console.log(response.data)
+          navigate('/rooms', { state: response.data })
+
          }  
         } catch (error) {
          console.log(error);
