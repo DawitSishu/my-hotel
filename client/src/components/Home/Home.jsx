@@ -40,7 +40,7 @@ const Home = (props) => {
  
 
   return (
-    <>
+    <div>
     <NavBar />
     <div className="main panel">
         <video src={background} autoPlay muted  loop/>
@@ -61,7 +61,7 @@ const Home = (props) => {
     <HomeBookRoom />
     </div>
   </div>
-    </>
+    </div>
   )
 }
 export default Home;

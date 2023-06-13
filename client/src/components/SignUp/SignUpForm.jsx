@@ -203,7 +203,7 @@ const SignUpForm = (props) => {
             </Grid>
             
             <Grid item xs={10} sm={6} >
-              <Link to='/'>
+              <Link to='/login'>
               <Button variant="contained" fullWidth>
               Log In
               </Button>

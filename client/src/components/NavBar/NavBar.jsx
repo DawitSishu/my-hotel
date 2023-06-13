@@ -3,11 +3,12 @@ import homeImg  from '../../Assets/homeIndicator.png';
 import bg from '../../Assets/bg.jpg';
 import React, { useState, useEffect, useRef } from 'react';
 import {gsap} from 'gsap';
-import {Link} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 
 const NavBar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const tl = useRef();
+    const navigate = useNavigate();
 
     useEffect(()=>{
         tl.current = gsap.timeline({
@@ -43,6 +44,15 @@ const NavBar = () => {
         })
     },[]);
 
+    const handleNavigation = (location) =>{
+        setIsOpen(false);
+        console.log(location);
+        setTimeout(()=>{
+            navigate(location);
+        }, 3000);
+       
+    }
+
     useEffect(()=>{
         if(isOpen){
             tl.current.play();
@@ -51,12 +61,12 @@ const NavBar = () => {
             tl.current.reverse();
             document.body.style.overflow = 'auto';
         }
-        // isOpen ? (tl.current.play(),document.body.style.overflow = 'hidden') : tl.current.reverse(); 
     },[isOpen])
     
     
     const toggleMenu = () => {
         setIsOpen(!isOpen);
+        
     };
   
     return (
@@ -66,8 +76,7 @@ const NavBar = () => {
                 <div className="line line2"></div>  
             </div>
             <div className="menu">
-                <Link to='/'>
-                    <div className="menu__item">
+                    <div className="menu__item" onClick={()=>handleNavigation('/')}>
                             <h3 className="menu__item-link" style={{color:'white'}}>Home</h3>
                             <img className="menu__item-img" src={homeImg} />
                             <div className="marquee">
@@ -76,9 +85,7 @@ const NavBar = () => {
                                 </div>
                             </div>
                     </div>
-                </Link>
-                <Link to='/gallery'>
-                    <div className="menu__item">
+                    <div className="menu__item" onClick={()=>handleNavigation('/gallery')}>
                             <h3 className="menu__item-link" style={{color:'white'}}>Gallery</h3>
                             <img className="menu__item-img" src={bg} />
                             <div className="marquee">
@@ -87,9 +94,7 @@ const NavBar = () => {
                                 </div>
                             </div>
                     </div>
-                </Link>
-                <Link>
-                    <div className="menu__item">
+                    <div className="menu__item" onClick={()=>handleNavigation('/reserve')}>
                             <h3 className="menu__item-link" style={{color:'white'}}>Reserve</h3>
                             <img className="menu__item-img" src={bg} />
                             <div className="marquee">
@@ -98,9 +103,7 @@ const NavBar = () => {
                                 </div>
                             </div>
                     </div>
-                </Link>
-                <Link to='/login'>
-                    <div className="menu__item">
+                    <div className="menu__item" onClick={()=>handleNavigation('/login')}>
                             <h3 className="menu__item-link" style={{color:'white'}}>Log-In</h3>
                             <img className="menu__item-img" src={bg} />
                             <div className="marquee">
@@ -109,7 +112,6 @@ const NavBar = () => {
                                 </div>
                             </div>
                     </div>
-                </Link>
             </div>    
         </>
     )

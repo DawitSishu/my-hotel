@@ -1,8 +1,11 @@
 import React from 'react'
+import NavBar from '../NavBar/NavBar'
 
 const Gallery = () => {
   return (
-    <div>Gallery</div>
+    <div style={{backgroundColor:'red'}}>
+      <NavBar />
+    </div>
   )
 }
 
