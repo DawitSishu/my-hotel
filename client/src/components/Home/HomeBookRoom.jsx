@@ -1,4 +1,4 @@
-import { Box, Button, Grid, Typography } from '@mui/material';
+import { Box, Button, Grid, Typography,FormHelperText } from '@mui/material';
 import {useForm,Controller} from 'react-hook-form';
 import 'react-datepicker/dist/react-datepicker.css';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -73,45 +73,47 @@ const HomeBookRoom = () => {
                     sx={{fontFamily:'Georgia',textAlign: 'center', color:"white" }}>
                         Book A Room
                 </Typography>
+                <Typography color="red" variant="h7">
+                  {err}
+                </Typography>
             </Grid>
 
             <Grid item xs={12} mt={3}>
-                <Controller
-                    name='checkInDate'
+                 <Controller
+                    name="checkInDate"
                     control={control}
                     rules={{ required: "Check-In Date can't be empty" }}
                     render={({ field }) => (
-                        <LocalizationProvider dateAdapter={AdapterDayjs}>
-                          <DatePicker
-                            label="Check-In Date"
-                            value={field.value || null} 
-                            onChange={(date) => field.onChange(date)}
-                            textField={(params) => (
-                              <OutlinedInput
-                                {...params}
-                                fullWidth
-                                id="checkInDate"
-                                type="text"
-                                InputProps={{
-                                  ...params.InputProps,
-                                  startAdornment: (
-                                    <InputAdornment position="start">
-                                      <EventIcon  />
-                                    </InputAdornment>
-                                  ),
-                                }}
-                              />
-                            )}
-                            sx={{ width: '100%' }}
-                          />
-              </LocalizationProvider>
-                  )}
-                 />
-                 {errors.password && (
-              <Typography color="error" variant="h7">
-                {errors.checkInDate.message}
-              </Typography>
-            )}   
+                      <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <DatePicker
+                          label="Check-In Date"
+                          value={field.value || null}
+                          onChange={(date) => field.onChange(date)}
+                          textField={(params) => (
+                            <OutlinedInput
+                              {...params}
+                              fullWidth
+                              id="checkInDate"
+                              type="text"
+                              InputProps={{
+                                ...params.InputProps,
+                                startAdornment: (
+                                  <InputAdornment position="start">
+                                    <EventIcon />
+                                  </InputAdornment>
+                                ),
+                              }}
+                            />
+                          )}
+                          sx={{ width: '100%' }}
+                          error={!!errors.checkInDate}
+                        />
+                        {errors.checkInDate && (
+                          <FormHelperText error>{errors.checkInDate.message}</FormHelperText>
+                        )}
+                      </LocalizationProvider>
+                    )}
+                  />
             </Grid>
             <Grid item xs={12} mt={3} >
                 <Controller
@@ -141,15 +143,14 @@ const HomeBookRoom = () => {
                               />
                             )}
                             sx={{ width: '100%' }}
+                            error={!!errors.checkInDate}
                           />
+                          {errors.checkOutDate && (
+                          <FormHelperText error>{errors.checkOutDate.message}</FormHelperText>
+                        )}
               </LocalizationProvider>
                   )}
                  />
-                 {errors.password && (
-              <Typography color="error" variant="h7">
-                {errors.checkInDate.message}
-              </Typography>
-            )}   
             </Grid>
             <Grid item xs={10}>
                 <Button type='submit' variant='outlined' sx={{mt:3}}>Find Rooms</Button>
