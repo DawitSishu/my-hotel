@@ -1,9 +1,13 @@
-import React from 'react'
+import {useState,useEffect} from 'react';
 
 const Reserve = () => {
+
+
   return (
-    <div>Reserve</div>
+    <div style={{backgroundColor:'black'}}>
+      reserve
+    </div>
   )
 }
 
-export default Reserve
+export default Reserve;
