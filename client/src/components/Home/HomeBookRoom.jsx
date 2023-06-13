@@ -7,13 +7,15 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import InputAdornment from '@mui/material/InputAdornment';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import EventIcon from '@mui/icons-material/Event';
+import {useState} from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import axios from 'axios';
 
-
-
+const BaseUri = 'http://localhost:5000/api/rooms/available';
+//api/rooms/available post 
 
 const HomeBookRoom = () => {
-
+    const [err,setErr] = useState('');
     const { register, handleSubmit, control,formState: { errors } } = useForm();
 
 
@@ -22,6 +24,19 @@ const HomeBookRoom = () => {
           mode: 'dark',
         },
       });
+    
+    const onDataSubmit = async(data) =>{
+      console.log(data);
+       try {
+         setErr('')
+         const response = await axios.post(BaseUri,{...data}) 
+         if(response){
+           console.log(response.data)
+         }  
+        } catch (error) {
+         console.log(error);
+      }
+    }  
 
 
   return (
@@ -47,6 +62,7 @@ const HomeBookRoom = () => {
               width: '100vw',
             },
           }}
+          onSubmit={handleSubmit(onDataSubmit)}
     >
         <Grid 
             container

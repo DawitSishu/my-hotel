@@ -43,20 +43,22 @@ const availabeRooms = asyncHandler(async (req, res) => {
   try {
     // Find available rooms that do not have any overlapping reservations
     const availableRooms = await Room.find({
-      reserved: 0,
-      'rooms.reservation': {
-        $not: {
-          $elemMatch: {
-            $or: [
-              { checkInDate: { $lt: checkOutDate }, checkOutDate: { $gt: checkInDate } },
-              { checkInDate: { $gte: checkInDate, $lte: checkOutDate } },
-              { checkOutDate: { $gte: checkInDate, $lte: checkOutDate } },
-            ],
-          },
-        },
-      },
+      available: { $gt: 0 },
+      $or: [
+        { 'rooms.reservation': null },
+        {
+          $and: [
+            {
+              'rooms.reserved': true,
+              $or: [
+                { 'rooms.reservation.checkInDate': { $gt: checkOutDate } },
+                { 'rooms.reservation.checkOutDate': { $lt: checkInDate } }
+              ]
+            }
+          ]
+        }
+      ]
     });
-
     res.status(200).json( availableRooms );
   } catch (err) {
     const error = new Error('Internal Server Error');
