@@ -7,6 +7,7 @@ import SignUp from './components/SignUp/SignUp';
 import Home from './components/Home/Home';
 import Gallery from './components/Gallery/Gallery';
 import Reserve from './components/Reserve/Reserve';
+import NotFoundPage from './components/NotFound/NotFound';
 
 function App() {
   const [loggedIn, SetLoggedIn] = useState(false);
@@ -25,7 +26,8 @@ function App() {
         <Route path='/login' element={<Login onLogIn = {handleLogIn} />} />
         <Route path='/signup' element={<SignUp />} />
         <Route path='/gallery' element={<Gallery />} />
-        <Route path='/reserve' element={<Reserve />} />
+        <Route path='/reserve' element={loggedIn ? <Reserve /> : <NotFoundPage />} />
+        <Route path="*" element={<NotFoundPage />} /> {/* Catch-all route for unknown routes */}
     </Routes>
     </BrowserRouter>
     // <>
