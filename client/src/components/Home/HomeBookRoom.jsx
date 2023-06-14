@@ -32,7 +32,7 @@ const HomeBookRoom = () => {
          setErr('')
          const response = await axios.post(BaseUri,{...data}) 
          if(response){
-          navigate('/rooms', { state: response.data })
+          navigate('/rooms', { state: {room : response.data, dates:{...data} }});
 
          }  
         } catch (error) {

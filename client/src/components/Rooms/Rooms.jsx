@@ -6,9 +6,11 @@ import CssBaseline from '@mui/material/CssBaseline';
 import NavBar from '../NavBar/NavBar';
 import photo from '../../Assets/9.jpg';
 import EventIcon from '@mui/icons-material/Event';
+import dayjs from 'dayjs';
 
 const Rooms = () => {
     const [rooms,setRooms] = useState(null);
+    const [dates,setDates] = useState(null);
     const navigate = useNavigate();
     const location = useLocation();
     
@@ -20,13 +22,16 @@ const Rooms = () => {
     });
     
     useEffect(()=>{
-        const availableRoooms  = location.state;
+        const availableRoooms  = location.state.room;
+        const dates = location.state.dates;
 
-        if(!availableRoooms) {
+        if(!availableRoooms && !dates) {
             navigate('/');
         }else{
-            console.log(availableRoooms);
+            console.log(availableRoooms ,dates);
             setRooms(availableRoooms);
+            setDates(dates);
+            // console.log(dates.checkInDate.$d.toLocaleDateString("en-US", options));
         }
     },[])
 
@@ -38,6 +43,9 @@ const Rooms = () => {
       <CssBaseline />
       <NavBar />
       <Grid container spacing={2} width="100vw" sx={{marginTop:12}}>
+         { dates && <Grid item xs={12} sx={{ marginLeft: 5,marginBottom:5 }}>
+            <Typography variant='h4'>Available Rooms: {dayjs(dates.checkInDate.$d).format('MMMM DD, YYYY')} - {dayjs(dates.checkOutDate.$d).format('MMMM DD, YYYY')}</Typography>
+          </Grid>} 
           { rooms ? rooms.map((room)=>{
                         return(
                           <Grid item xs={12} sx={{ marginLeft: 5 }} key={room._id}> 
