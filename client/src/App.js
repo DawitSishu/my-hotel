@@ -8,6 +8,7 @@ import Gallery from './components/Gallery/Gallery';
 import Reserve from './components/Reserve/Reserve';
 import NotFoundPage from './components/NotFound/NotFound';
 import Rooms from './components/Rooms/Rooms';
+import Profile from './components/Profile/Profile';
 
 function App() {
   const [loggedIn, SetLoggedIn] = useState(false);
@@ -28,6 +29,7 @@ function App() {
         <Route path='/gallery' element={<Gallery />} />
         <Route path='/reserve' element={loggedIn ? <Reserve /> : <NotFoundPage />} />
         <Route path='/rooms' element={<Rooms />} />
+        <Route path='/profile' element={<Profile />} />
         <Route path="*" element={<NotFoundPage />} /> 
     </Routes>
     </BrowserRouter>

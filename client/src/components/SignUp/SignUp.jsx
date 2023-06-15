@@ -4,6 +4,7 @@ import '../Login/Login.css';
 import SignUpForm from "./SignUpForm";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
+import NavBar from "../NavBar/NavBar";
 
 const baseUrl = 'http://localhost:5000/api/users/signup'
 
@@ -27,9 +28,12 @@ const SignUp = () => {
   }
 }
   return (
-    <div className="main">
-    <video src={background} autoPlay muted loop />
-    <SignUpForm err={err} onSubmit={handleUserData}/>
+    <div>
+      <NavBar />
+      <div className="main">
+        <video src={background} autoPlay muted loop />
+        <SignUpForm err={err} onSubmit={handleUserData}/>
+      </div>
     </div>
   )
 }

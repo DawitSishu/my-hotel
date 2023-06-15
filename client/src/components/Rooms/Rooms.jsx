@@ -22,20 +22,20 @@ const Rooms = () => {
     });
     
     useEffect(()=>{
-        const availableRoooms  = location.state.room;
-        const dates = location.state.dates;
-
-        if(!availableRoooms && !dates) {
-            navigate('/');
+        if(!location.state) {
+            navigate('/404');
         }else{
+          const availableRoooms  = location.state.room;
+          const dates = location.state.dates;
             console.log(availableRoooms ,dates);
             setRooms(availableRoooms);
             setDates(dates);
-            // console.log(dates.checkInDate.$d.toLocaleDateString("en-US", options));
         }
     },[])
 
-
+    const handleReservation = (room) =>{
+      navigate('/reserve',{ state: {room} });
+    }
 
 
   return (
@@ -65,8 +65,13 @@ const Rooms = () => {
                             <Typography variant="h4">{room.type}</Typography>
                             <Typography variant="h6">{`Price: $${room.price}`}</Typography>
                             <Typography variant="h6">{`Available: ${room.available} Rooms`}</Typography>
-                            <Button variant="contained" sx={{ marginTop: 2 }} startIcon={<EventIcon />} >
-                              Reserve
+                            <Button 
+                              variant="contained" 
+                              sx={{ marginTop: 2 }} 
+                              startIcon={<EventIcon />}
+                              onClick={()=>{handleReservation(room)}}
+                              >
+                                Reserve
                             </Button>
                           </Box>
                         </Box>

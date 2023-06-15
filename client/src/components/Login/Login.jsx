@@ -13,6 +13,7 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { Link } from 'react-router-dom';
 // import Spinner from "../Spinner/Spinner"
 import axios from 'axios';
+import NavBar from "../NavBar/NavBar";
 
 const baseUrl = 'http://localhost:5000/api/users/login'
 
@@ -47,7 +48,8 @@ function Login(props) {
       }
     }
   return (
-    
+    <div>
+      <NavBar />
   <div className="main">
     <video src={background} autoPlay muted loop />
     <ThemeProvider theme={darkTheme}>
@@ -142,6 +144,7 @@ function Login(props) {
       </Grid>
     </Box>
     </ThemeProvider>
+  </div>
   </div>
   )
 }
