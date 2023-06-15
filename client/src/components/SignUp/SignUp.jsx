@@ -24,7 +24,6 @@ const SignUp = () => {
     } catch (error) {
      setIsDisabled(false)
      console.log(error);
-    //  setErr(error.response.data.message)
   }
 }
   return (

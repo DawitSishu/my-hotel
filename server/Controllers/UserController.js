@@ -64,27 +64,26 @@ const loginUser = asyncHandler(async (req, res) => {
     }
   
     const user = await User.findOne({ email });
-  
+    console.log(user)
     if (!user) {
       const err = new Error('Incorrect Email or Password');
         err.statusCode = 401;
       throw err;
-    } else {
+    } 
       const isPasswordMatch = await bcrypt.compare(password, user.password);
-  
       if (!isPasswordMatch) {
         const err = new Error('Incorrect Email or Password');
         err.statusCode = 401;
       throw err;
-      } else {
+      } 
         const { password: omitPassword, ...userData } = user.toObject();
 
-        const token = jwt.sign(userData, process.env.SECRET_KEY, { expiresIn: '1d' });
+      const token =  jwt.sign(userData, process.env.SECRET_KEY, { expiresIn: '1d' });
+      console.log(token)
       res.json({
         token,
       });
-      }
-    }
+      
   });
 
 

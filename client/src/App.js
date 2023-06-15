@@ -29,7 +29,7 @@ function App() {
         <Route path='/gallery' element={<Gallery />} />
         <Route path='/reserve' element={loggedIn ? <Reserve /> : <NotFoundPage />} />
         <Route path='/rooms' element={<Rooms />} />
-        <Route path='/profile' element={<Profile />} />
+        <Route path='/profile' element={loggedIn ? <Profile /> : <NotFoundPage />} />
         <Route path="*" element={<NotFoundPage />} /> 
     </Routes>
     </BrowserRouter>

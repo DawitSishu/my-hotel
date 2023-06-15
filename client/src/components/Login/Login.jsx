@@ -11,6 +11,7 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import { AccountCircle } from '@mui/icons-material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 // import Spinner from "../Spinner/Spinner"
 import axios from 'axios';
 import NavBar from "../NavBar/NavBar";
@@ -18,6 +19,7 @@ import NavBar from "../NavBar/NavBar";
 const baseUrl = 'http://localhost:5000/api/users/login'
 
 function Login(props) {
+    const navigate = useNavigate(); 
     const [isDisabled,setIsDisabled] = useState(false)
     const [showPassword, setShowPassword] = useState(false);
     const [err,setErr] = useState('')
@@ -32,14 +34,14 @@ function Login(props) {
 
     const handleUserData =  async (data) => {
         setIsDisabled(true)
-        console.log(data);
         try {
          setErr('')
          const response = await axios.post(baseUrl,{...data}) 
          if(response){
            localStorage.clear();
            localStorage.setItem('token', response.data.token);
-           props.onLogIn()
+           props.onLogIn();
+           navigate('/profile')
          }  
         } catch (error) {
          setIsDisabled(false)
